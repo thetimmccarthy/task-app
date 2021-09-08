@@ -13,26 +13,40 @@ import Overview from './components/Overview';
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
         
+        let newTask = {text: this.state.task.text,
+          id: this.state.task.id};
         this.setState({
             task: {text: '',
                 id: uniqid()},
-            tasks: [...this.state.tasks, event.target.task.value]
+            tasks: [...this.state.tasks, newTask]
         });
         
     }
 
     handleChange = (event) => {
+      
         this.setState({
             task: {
                 text: event.target.value,
                 id: this.state.task.id
             }
         })
+    }
+
+    handleDelete = (taskIdToDelete) => {
+      console.log(taskIdToDelete);  
+      const filteredTasks = this.state.tasks.filter((task, index) => {
+        return task.id !== taskIdToDelete;
+      });
+    
+    this.setState({tasks: filteredTasks});
+
     }
   render () {
     const {task, tasks} = this.state;
@@ -44,7 +58,7 @@ import Overview from './components/Overview';
           <input type="text" id="task" name="task" value={task.text} required onChange={this.handleChange} /> 
           <input type="submit" value="Submit" />
         </form>
-        <Overview task={task.text} tasks={tasks} />
+        <Overview task={task.text} tasks={tasks} handleDelete={this.handleDelete}/>
       </div>
 
     );

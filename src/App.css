@@ -1,7 +1,14 @@
-/* .App {
+.App {
+  text-align: center;
+}
+body {
   text-align: center;
 }
 
+ul {
+  list-style-position: inside;
+}
+/*
 .App-logo {
   height: 40vmin;
   pointer-events: none;

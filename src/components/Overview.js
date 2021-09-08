@@ -1,9 +1,12 @@
 import React, { Component} from 'react';
-import uniqid from 'uniqid';
 
 class Overview extends Component {
     
-    
+    deleteTask = (event) => {
+        let id = event.target.id;
+        this.props.handleDelete(id);
+        event.preventDefault();
+    }
 
     render () {
         const {task, tasks} = this.props;       
@@ -11,8 +14,8 @@ class Overview extends Component {
         return (
             <div>                
                 <ul>
-                    {tasks.map((task, index) => {
-                        return (<li key={task.id}>{task} <button>Delete</button></li>)
+                    {tasks.map((task, index) => {                        
+                        return (<li key={task.id} id={task.id} >{task.text} <button id={task.id} onClick={this.deleteTask}>Delete</button></li>)
                     })}            
                 </ul>
             </div>
