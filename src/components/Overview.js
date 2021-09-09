@@ -1,22 +1,18 @@
 import React, { Component} from 'react';
+import Listitem from './Listitem';
 
 class Overview extends Component {
-    
-    deleteTask = (event) => {
-        let id = event.target.id;
-        this.props.handleDelete(id);
-        event.preventDefault();
-    }
 
     render () {
-        const {task, tasks} = this.props;       
+        const {task, tasks, handleDelete} = this.props;       
 
         return (
             <div>                
                 <ul>
-                    {tasks.map((task, index) => {                        
-                        return (<li key={task.id} id={task.id} >{task.text} <button id={task.id} onClick={this.deleteTask}>Delete</button></li>)
-                    })}            
+
+                    {tasks.map((task) => {
+                        return <Listitem key={task.id} task={task} handleDelete={this.props.handleDelete} handleEditSubmit={this.props.handleEditSubmit} />
+                    })}
                 </ul>
             </div>
         )

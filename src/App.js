@@ -7,13 +7,19 @@ import Overview from './components/Overview';
     constructor(props) {
         super(props);
         this.state = {
-            task: {text: '',
-                id: uniqid()},
+            
+            task: {
+              text: '',
+              id: 0
+              },
             tasks: [],
+            count: 0
+            
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleEditSubmit = this.handleEditSubmit.bind(this);
     }
 
     handleSubmit = (event) => {
@@ -22,11 +28,23 @@ import Overview from './components/Overview';
         let newTask = {text: this.state.task.text,
           id: this.state.task.id};
         this.setState({
+            
             task: {text: '',
-                id: uniqid()},
-            tasks: [...this.state.tasks, newTask]
+                id: this.state.count + 1},
+            tasks: [...this.state.tasks, newTask],
+            count: this.state.count + 1
         });
-        
+    }
+    
+    handleEditSubmit = (newTask, id) => {
+      let updatedTasks = this.state.tasks.map((task) => {
+        if (task.id === id) {
+          task.text = newTask
+        }
+        return task
+      });
+      
+      this.setState({tasks: updatedTasks});
     }
 
     handleChange = (event) => {
@@ -40,16 +58,18 @@ import Overview from './components/Overview';
     }
 
     handleDelete = (taskIdToDelete) => {
-      console.log(taskIdToDelete);  
-      const filteredTasks = this.state.tasks.filter((task, index) => {
+      
+      const filteredTasks = this.state.tasks.filter((task) => {
         return task.id !== taskIdToDelete;
       });
-    
-    this.setState({tasks: filteredTasks});
+      
+      this.setState({tasks: filteredTasks,});
 
     }
   render () {
+    
     const {task, tasks} = this.state;
+    
     return (
 
       <div>
@@ -58,7 +78,7 @@ import Overview from './components/Overview';
           <input type="text" id="task" name="task" value={task.text} required onChange={this.handleChange} /> 
           <input type="submit" value="Submit" />
         </form>
-        <Overview task={task.text} tasks={tasks} handleDelete={this.handleDelete}/>
+        <Overview task={task.text} tasks={tasks} handleDelete={this.handleDelete} onChange={this.handleChange} onSubmit={this.handleSubmit} handleEditSubmit={this.handleEditSubmit}/>
       </div>
 
     );
